@@ -1,0 +1,17 @@
+name: zshop
+on: workflow_dispatch
+env:
+  MY_ENV_VAR: this-is-a-value
+
+jobs:
+  Testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: code checkout
+        uses: actions/checkout@v4
+
+      - name: Maven test
+        run: mvn test
+
+      - name: Checkstyle
+        run: mvn checkstyle:checkstyle
