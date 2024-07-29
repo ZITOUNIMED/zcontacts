@@ -2,7 +2,7 @@ name: Build APP
 run-name: ${{ github.actor }} is building application using github actions.
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Testing:
     runs-on: ubuntu-latest
     steps:
       - name: code checkout
@@ -49,3 +49,22 @@ jobs:
           sonar_HOST_URL: ${{ secrets.SONAR_URL }}
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
+
+  BUILD_AND_PUBLISH:
+    needs: Testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v4
+
+      - name: docker login
+        run: |
+         docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: build image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/zcontacts .
+      
+      - name: push image
+        run: |
+            docker push ${{ secrets.DOCKER_USERNAME }}/zcontacts
