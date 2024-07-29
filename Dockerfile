@@ -2,8 +2,5 @@ FROM openjdk:11
 RUN apt update && apt install maven -y
 COPY ./ zcontacts
 RUN cd zcontacts && mvn install 
-RUN ls zcontacts/target
-COPY zcontacts/target/*.jar app.jar
-RUN ls zcontacts/target
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["java","-jar","zcontacts/target/zcontacts-0.0.1-SNAPSHOT.jar"]
 EXPOSE 5000
